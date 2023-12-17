@@ -8,7 +8,8 @@ use App\Models\Post;
 
 class Postcontroller extends Controller
 {
-    private $columns =['title', 'description', 'published', 'auther'];
+    //session5
+    // private $columns =['title', 'description', 'published', 'auther'];
 
     /**
      * Display a listing of the resource.
@@ -54,7 +55,17 @@ class Postcontroller extends Controller
         // return 'data added successfully';
 
         //session5
-        $data=$request->only($this->columns);
+        // $data=$request->only($this->columns);
+        // $data['published']=isset($request->published);
+        // Post::create($data);
+        // return redirect('posts');
+
+        //session6
+        $data=$request->validate([
+            'title'=>'required|string|max:100',
+            'description'=>'required|string',
+            'auther'=>'required|string|max:50',
+        ]);
         $data['published']=isset($request->published);
         Post::create($data);
         return redirect('posts');
@@ -108,6 +119,23 @@ class Postcontroller extends Controller
      */
     public function destroy($id)
     {
-        //
+        Post::where('id',$id)->delete();
+        return redirect('posts');
+    }
+
+    public function trashed(){
+        $posts =Post::onlyTrashed()->get();
+        return view('trashed', compact('posts'));
+    }
+    public function forceDelete($id)
+    {
+        Post::where('id',$id)->forceDelete();
+        return redirect('posts');
+    }
+
+    public function restore($id)
+    {
+        Post::where('id',$id)->restore();
+        return redirect('posts');
     }
 }
