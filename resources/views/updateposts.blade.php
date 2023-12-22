@@ -11,8 +11,8 @@
 <body>
     @include('include.nav')
 <div class="container">
-  <h2>Add new post</h2>
-  <form action="{{ route('update',$post->id) }}" method="post">
+  <h2>update post</h2>
+  <form action="{{ route('update',$post->id) }}" method="post" enctype="multipart/form-data">
     @csrf
     @method('put')
     <div class="form-group">
@@ -22,6 +22,19 @@
     <div class="form-group">
       <label for="description">description:</label>
       <textarea class="form-control" name="description" id="" cols="60" rows="3">{{ $post->description }}</textarea>
+    </div>
+    <div class="form-group">
+      <label for="image">Image:</label>
+
+      <input type="file" class="form-control" id="image" name="image">
+      <img src="{{asset('assets/images/'.$post->image)}}" alt="post" style="width:200px;">
+
+
+
+
+      @error('image')
+        {{ $message }}
+      @enderror
     </div>
     <div class="checkbox">
       <label><input type="checkbox" name="published" {{ ($post->published)? "checked": ""}} > Published me</label>

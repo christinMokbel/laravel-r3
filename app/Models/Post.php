@@ -15,5 +15,6 @@ class Post extends Model
         'description',
         'published',
         'auther',
+        'image',
         ];
 }
